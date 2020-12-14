@@ -12,6 +12,7 @@ import { Container } from './styles';
 
 interface ToastProps {
   message: ToastMessage;
+  style: Record<string, unknown>; // talbez tenha que usar object
 }
 
 const icons = {
@@ -20,7 +21,7 @@ const icons = {
   success: <FiCheckCircle size={24} />,
 };
 
-const Toast: React.FC<ToastProps> = ({ message }) => {
+const Toast: React.FC<ToastProps> = ({ message, style }) => {
   const { removeToast } = useToast();
 
   useEffect(() => {
@@ -29,13 +30,17 @@ const Toast: React.FC<ToastProps> = ({ message }) => {
     }, 3000);
 
     return () => {
-      // se eu retorno uma funcao dentro de useEffect ela é executada caso o componente deixe de existir
+      // se eu retorno uma função dentro de useEffect ela é executada caso o componente deixe de existir
       clearTimeout(timer);
     };
   }, [message.id, removeToast]);
 
   return (
-    <Container type={message.type} hasDescription={!!message.description}>
+    <Container
+      type={message.type}
+      hasDescription={!!message.description}
+      style={style}
+    >
       {icons[message.type || 'info']}
 
       <div>
